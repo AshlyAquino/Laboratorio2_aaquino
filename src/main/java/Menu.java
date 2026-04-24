@@ -1,21 +1,37 @@
+
+// Menú principal
+import javax.swing.JOptionPane;
+
 /*
  * Click nbfs://nbhost/SystemFileSystem/Templates/Licenses/license-default.txt to change this license
  * Click nbfs://nbhost/SystemFileSystem/Templates/GUIForms/JFrame.java to edit this template
  */
-
 /**
  *
  * @author aquin
  */
 public class Menu extends javax.swing.JFrame {
-    
+
     private static final java.util.logging.Logger logger = java.util.logging.Logger.getLogger(Menu.class.getName());
 
     /**
      * Creates new form Menu
      */
-    public Menu() {
+    String usuario = Usuarios.Sesion.usuarioActual;
+    String rol = Usuarios.Sesion.rolActual;
+
+    // Constructor
+    public Menu(String user, String rol) {
+
+        setTitle("Menú Principal");
+        setIconImage(new javax.swing.ImageIcon(getClass().getResource("/img/icon.jpg")).getImage());
         initComponents();
+        this.pack();
+        this.setLocationRelativeTo(null);
+        Usuarios.Sesion.usuarioActual = user;
+        Usuarios.Sesion.rolActual = rol;
+        this.setLocationRelativeTo(null);
+
     }
 
     /**
@@ -27,21 +43,83 @@ public class Menu extends javax.swing.JFrame {
     // <editor-fold defaultstate="collapsed" desc="Generated Code">//GEN-BEGIN:initComponents
     private void initComponents() {
 
-        setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
+        img = new javax.swing.JLabel();
+        Título = new javax.swing.JLabel();
+        Logout = new javax.swing.JButton();
+        Manteni_Usuario = new javax.swing.JButton();
+        Reiniciar_Clave = new javax.swing.JButton();
+        jLabel4 = new javax.swing.JLabel();
+        jLabel2 = new javax.swing.JLabel();
 
-        javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
-        getContentPane().setLayout(layout);
-        layout.setHorizontalGroup(
-            layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGap(0, 400, Short.MAX_VALUE)
-        );
-        layout.setVerticalGroup(
-            layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGap(0, 300, Short.MAX_VALUE)
-        );
+        setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
+        getContentPane().setLayout(new org.netbeans.lib.awtextra.AbsoluteLayout());
+
+        img.setIcon(new javax.swing.ImageIcon(getClass().getResource("/img/menu/menu3.png"))); // NOI18N
+        getContentPane().add(img, new org.netbeans.lib.awtextra.AbsoluteConstraints(10, 0, -1, 520));
+
+        Título.setFont(new java.awt.Font("Trebuchet MS", 1, 24)); // NOI18N
+        Título.setIcon(new javax.swing.ImageIcon(getClass().getResource("/img/menu/menu2 (2).png"))); // NOI18N
+        getContentPane().add(Título, new org.netbeans.lib.awtextra.AbsoluteConstraints(360, 30, 410, 190));
+
+        Logout.setIcon(new javax.swing.ImageIcon(getClass().getResource("/img/logout.png"))); // NOI18N
+        Logout.addActionListener(this::LogoutActionPerformed);
+        getContentPane().add(Logout, new org.netbeans.lib.awtextra.AbsoluteConstraints(670, 440, 80, 90));
+
+        Manteni_Usuario.setBackground(new java.awt.Color(189, 213, 255));
+        Manteni_Usuario.setFont(new java.awt.Font("Trebuchet MS", 1, 24)); // NOI18N
+        Manteni_Usuario.setText("Mantenimiento de Usuarios");
+        Manteni_Usuario.addActionListener(this::Manteni_UsuarioActionPerformed);
+        getContentPane().add(Manteni_Usuario, new org.netbeans.lib.awtextra.AbsoluteConstraints(390, 270, -1, -1));
+
+        Reiniciar_Clave.setBackground(new java.awt.Color(153, 204, 255));
+        Reiniciar_Clave.setFont(new java.awt.Font("Trebuchet MS", 1, 24)); // NOI18N
+        Reiniciar_Clave.setText("Reiniciar Clave");
+        Reiniciar_Clave.addActionListener(this::Reiniciar_ClaveActionPerformed);
+        getContentPane().add(Reiniciar_Clave, new org.netbeans.lib.awtextra.AbsoluteConstraints(460, 370, -1, -1));
+
+        jLabel4.setFont(new java.awt.Font("Trebuchet MS", 1, 18)); // NOI18N
+        jLabel4.setForeground(new java.awt.Color(0, 0, 204));
+        jLabel4.setText("Cerrar Sesión --->");
+        getContentPane().add(jLabel4, new org.netbeans.lib.awtextra.AbsoluteConstraints(490, 480, -1, -1));
+
+        jLabel2.setIcon(new javax.swing.ImageIcon(getClass().getResource("/img/menu/menu1.jpg"))); // NOI18N
+        getContentPane().add(jLabel2, new org.netbeans.lib.awtextra.AbsoluteConstraints(0, 0, 770, 550));
 
         pack();
     }// </editor-fold>//GEN-END:initComponents
+
+    // Botón Mantenimiento de Usuario
+    private void Manteni_UsuarioActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_Manteni_UsuarioActionPerformed
+
+        if ("Encargado".equals(rol) || "Supervisor".equals(rol)) {
+
+            new Manten_Usuario(Usuarios.Sesion.rolActual).setVisible(true);
+            this.dispose();
+
+        } else {
+
+            JOptionPane.showMessageDialog(this, "Acceso denegado\n Solo el Encargado general y Supervisores pueden acceder a este módulo",
+                    "Permiso denegado", JOptionPane.ERROR_MESSAGE);
+        }
+
+    }//GEN-LAST:event_Manteni_UsuarioActionPerformed
+
+    // Botón Reiniciar Clave
+    private void Reiniciar_ClaveActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_Reiniciar_ClaveActionPerformed
+
+        Reini_Clave clave = new Reini_Clave();
+        clave.setLocationRelativeTo(null);
+        clave.setVisible(true);
+        this.dispose();
+
+    }//GEN-LAST:event_Reiniciar_ClaveActionPerformed
+
+    // Logout
+    private void LogoutActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_LogoutActionPerformed
+
+        Usuarios.cerrarSesion(this);
+
+    }//GEN-LAST:event_LogoutActionPerformed
 
     /**
      * @param args the command line arguments
@@ -65,9 +143,16 @@ public class Menu extends javax.swing.JFrame {
         //</editor-fold>
 
         /* Create and display the form */
-        java.awt.EventQueue.invokeLater(() -> new Menu().setVisible(true));
     }
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
+    private javax.swing.JButton Logout;
+    private javax.swing.JButton Manteni_Usuario;
+    private javax.swing.JButton Reiniciar_Clave;
+    private javax.swing.JLabel Título;
+    private javax.swing.JLabel img;
+    private javax.swing.JLabel jLabel2;
+    private javax.swing.JLabel jLabel4;
     // End of variables declaration//GEN-END:variables
-}
+
+} // FIN
